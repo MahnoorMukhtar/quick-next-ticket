@@ -1,4 +1,5 @@
 import { getTicketById } from "@/actions/tickets.actions";
+import CloseTicketButton from "@/components/CloseTicketButton";
 import { getPriorityClass } from "@/utils/ui";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -32,6 +33,9 @@ const TicketDetailPage = async(props: {params: Promise<{id: string}>}) => {
                 <Link href='/tickets' className="inline-flex gap-2 items-center bg-blue-600 transition hover:bg-blue-700 text-white text-center rounded py-2 px-4">
                    <FaArrowLeft size={10}/> Back to Tickets
                 </Link>
+                { ticket.status !== 'Closed' && (
+                    <CloseTicketButton ticketId={ticket.id} isClosed={ticket.status === 'Closed'} />
+                ) }
             </div>
         </div>
      );

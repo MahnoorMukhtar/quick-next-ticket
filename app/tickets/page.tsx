@@ -1,12 +1,17 @@
 import { getTicket } from "@/actions/tickets.actions";
+import TicketItem from "@/components/TicketItem";
+import { getCurrentUser } from "@/lib/current-user";
 import { getPriorityClass } from "@/utils/ui";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 const TicketsPage = async () => {
 
     const tickets = await getTicket()
-    console.log("ticktes", tickets)
-
+    const user = await getCurrentUser()
+    if(!user){
+        redirect('/login')
+    }
 
     return (
         <div className="min-h-screen bg-blue-50 p-8">
@@ -20,23 +25,7 @@ const TicketsPage = async () => {
             ) : (
                 <div className="space-y-4 max-w-3xl mx-auto text-center">
                     {tickets.map((ticket) => (
-                        <div key={ticket.id} className="flex justify-between items-center p-3 bg-white rounded shadow border border-gray-200">
-                            <div>
-                                <h2 className="text-xl font-semibold text-blue-800">
-                                    {ticket.subject}
-                                </h2>
-                            </div>
-                            <div className="text-right space-y-4">
-                                <div className="text-sm textgray-500">
-                                    Priority <span className={getPriorityClass(ticket.priority)}>{ticket.priority}</span>
-                                </div>
-                                <Link
-                                    href={`/tickets/${ticket.id}`}
-                                    className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 mt-2 rounded text-sm transition text-center">
-                                    View Ticket
-                                </Link>
-                            </div>
-                        </div>
+                        <TicketItem ticket={ticket} />
                     ))}
                 </div>
 

@@ -1,5 +1,4 @@
 export const getPriorityClass = (priority: string) => {
-  console.log("priority", priority);
   switch (priority) {
     case "High":
       return "text-red-600 font-bold";
